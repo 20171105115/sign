@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.imnu.dao.SignDao">
+    <resultMap id="resultMap" type="Sign">
+        <id property="signId" column="sign_id" javaType="int"/>
+        <result property="createId" column="create_id" javaType="int"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+        <result property="gradeId" column="grade_id" javaType="int"/>
+        <association property="grade" column="grade_id" javaType="Grade">
+            <result property="gradeName" column="grade_name" javaType="String"/>
+        </association>
+        <association property="creator" column="staff_id" javaType="Staff">
+            <result property="name" column="cname" javaType="String"/>
+        </association>
+    </resultMap>
+    <insert id="insert" parameterType="Sign" useGeneratedKeys="true" keyProperty="signId">
+        insert into sign(create_id,create_time,grade_id)
+        values (#{createId},#{createTime},#{gradeId});
+    </insert>
+
+    <select id="selectBySignList" resultMap="resultMap" parameterType="int">
+        select staff.name,sign.*,grade.grade_name
+        from sign,staff,grade
+        where sign.create_id=staff.staff_id and sign.grade_id=grade.grade_id and sign.create_id=#{createId}
+    </select>
+
+</mapper>

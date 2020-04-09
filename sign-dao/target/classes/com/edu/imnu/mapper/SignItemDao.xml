@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.imnu.dao.SignItemDao">
+    <resultMap id="resultMap" type="SignItem">
+        <id property="signItemId" column="sign_item_id" javaType="int"/>
+        <result property="signId" column="sign_id" javaType="int"/>
+        <result property="status" column="status" javaType="String"/>
+        <result property="signInId" column="sign_in_id" javaType="int"/>
+        <result property="signInTime" column="sign_in_time" javaType="java.util.Date"/>
+        <association property="signor" column="sign_in_id" javaType="Staff">
+            <result property="name" column="sname" javaType="String"/>
+            <result property="post" column="post" javaType="String"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" parameterType="SignItem" useGeneratedKeys="true" keyProperty="signItemId">
+        insert into sign_item(sign_id,status,sign_in_id,sign_in_time) values (#{signId},#{status},#{signInId},#{signInTime});
+    </insert>
+
+    <update id="update" parameterType="Grade">
+        update sign_item set status=#{status},sign_in_time=#{signInTime}
+        where sign_in_id=#{signInId} and sign_item_id=#{signItemId};
+    </update>
+
+    <select id="selectByDetail" resultMap="resultMap" parameterType="int">
+        select sign_item.*,staff.name as sname,staff.post
+         from sign_item,staff
+        where sign_item.sign_in_id=staff.staff_id and sign_item.sign_id=#{signId}
+    </select>
+
+    <select id="selectBySelf" resultMap="resultMap" parameterType="int">
+        select sign_item.*,staff.name from sign_item,staff
+        where sign_in_id=#{signInId}
+    </select>
+
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.imnu.dao.GradeDao">
+    <resultMap id="resultMap" type="Grade">
+        <id property="gradeId" column="grade_id" javaType="int"/>
+        <result property="gradeName" column="grade_name" javaType="String"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Grade" useGeneratedKeys="true" keyProperty="gradeId">
+        insert into grade(grade_name,create_time) values (#{gradeName},#{createTime});
+    </insert>
+    <delete id="delete" parameterType="int">
+        delete from grade where grade_id=#{gradeId};
+    </delete>
+    <update id="update" parameterType="Grade">
+        update grade set grade_name=#{gradeName}
+        where grade_id=#{gradeId};
+    </update>
+    <select id="selectAllGrade" resultMap="resultMap">
+        select * from grade;
+    </select>
+    <select id="selectByGradeId" resultMap="resultMap" parameterType="int">
+        select * from grade where grade_id=#{id};
+    </select>
+</mapper>

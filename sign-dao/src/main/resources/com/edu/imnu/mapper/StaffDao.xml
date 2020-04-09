@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.imnu.dao.StaffDao">
+    <resultMap id="resultMap" type="Staff">
+        <id property="staffId" column="staff_id" javaType="int"/>
+        <result property="name" column="name" javaType="String"/>
+        <result property="username" column="username" javaType="String"/>
+        <result property="password" column="password" javaType="String"/>
+        <result property="post" column="post" javaType="String"/>
+        <result property="sex" column="sex" javaType="String"/>
+        <result property="gradeId" column="grade_id" javaType="int"/>
+        <association property="grade" column="grade_id" javaType="Grade">
+            <result property="gradeName" column="grade_name" javaType="String"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" parameterType="Staff" useGeneratedKeys="true" keyProperty="staffId">
+        insert into staff(name,username,password,post,sex,grade_id)
+        values (#{name},#{username},#{password},#{post},#{sex},#{gradeId});
+    </insert>
+    <delete id="delete" parameterType="int">
+        delete from staff where staff_id=#{staffId};
+    </delete>
+    <update id="updateByInfo" parameterType="Staff">
+        update staff
+        set name=#{name},username=#{username},password=#{password},post=#{post},sex=#{sex},grade_id=#{gradeId}
+        where staff_id=#{staffId};
+    </update>
+    <select id="selectByGradeId" resultMap="resultMap" parameterType="int">
+        select grade.grade_name,staff.*
+        from staff,grade
+        where staff.grade_id=grade.grade_id and grade.grade_id=#{gradeId};
+    </select>
+    <select id="select" resultMap="resultMap" parameterType="int">
+        select grade.grade_name,staff.*
+        from staff,grade
+        where staff.grade_id=grade.grade_id and staff_id=#{staffId};
+    </select>
+    <select id="selectByUsername" resultMap="resultMap" parameterType="String">
+        select grade.grade_name,staff.*
+        from staff,grade
+        where staff.grade_id=grade.grade_id and staff.username=#{username};
+    </select>
+</mapper>
+
+
+
+
+
+
+
